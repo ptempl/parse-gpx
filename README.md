@@ -4,6 +4,10 @@
 
 Parses gpx files into json for data processing, for..................reasons.
 
+# install
+
+npm install https://github.com/ptempl/parse-gpx
+
 # usage
 
 The gpx file will be converted to an Array of `TrackPoint` objects. Containing the latitude, longitude, elevation, and a timestamp.
@@ -28,3 +32,4 @@ npm run coverage
 # license
 
 > do wutever u want whenever u want
+
