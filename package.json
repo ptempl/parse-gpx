@@ -24,7 +24,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dmamills/parse-gpx.git"
+    "url": "git+https://github.com/ptempl/parse-gpx.git"
   },
   "keywords": [
     "gpx",

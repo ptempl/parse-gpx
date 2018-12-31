@@ -8,6 +8,8 @@ const parseTrack = require('../src/parseTrack');
 const fs = require('fs');
 const xml2js = require('xml2js');
 
+
+
 describe('TrackPoint', () => {
     it('should be constructable!', () => {
         let tp = new TrackPoint(1,2,3,"2016-06-09T15:59:45.000Z");
@@ -39,6 +41,66 @@ describe('parseTrack', () => {
             });
         });
     });
+});
+
+describe('parseTrackFromString', () => {
+    const gpxPathStr = fs.readFileSync(__dirname + '/test.gpx','utf8'); // force blocking
+    const gpxTestLonPathStr = fs.readFileSync(__dirname + '/test-lon.gpx','utf8');
+    const gpxHeartRate  = fs.readFileSync(__dirname + '/heartrate.gpx','utf8');
+    const gpxCadence  = fs.readFileSync(__dirname + '/cadence.gpx','utf8');
+    it('return an array', () => {
+        parseGpx(gpxPathStr, false).then(data => {
+            data.should.be.Array();
+        });
+    });
+
+    it('array should contain TrackPoints', () => {
+        parseGpx(gpxPathStr, false).then(data => {
+            data.forEach(t => {
+                t.should.be.instanceOf(TrackPoint);
+            });
+        });
+    });
+    it('trackpoints should have all expected attributes', () => {
+        parseGpx(gpxPathStr, false).then(data => {
+            let tp = data[0];
+
+            tp.should.have.property('latitude');
+            tp.should.have.property('longitude');
+            tp.should.have.property('timestamp');
+            tp.should.have.property('elevation');
+        });
+    });
+
+    it('trackpoints should have longitude when attribute named lon', () => {
+        parseGpx(gpxTestLonPathStr, false).then(data => {
+            let tp = data[0];
+            tp.should.have.property('longitude');
+        });
+    });
+
+
+    it('should have heartrate if found', () => {
+        parseGpx(gpxHeartRate, false).then(data => {
+            let tp = data[0];
+            tp.heartrate.should.equal('114');
+        });
+    });
+
+    it('should have cadence if found', () => {
+        parseGpx(gpxCadence, false).then(data => {
+            let tp = data[0];
+            tp.cadence.should.equal('99');
+        });
+    });
+
+
+    it('should return an error when unable to parse xml', () => {
+        parseGpx('Bad GPX', false).then(()=>{}, err => {
+            err.should.be.instanceOf(Error);
+        });
+    });
+
 });
 
 describe('parse gpx', () => {
