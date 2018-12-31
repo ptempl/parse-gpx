@@ -6,7 +6,9 @@ Parses gpx files into json for data processing, for..................reasons.
 
 # install
 
+```
 npm install https://github.com/ptempl/parse-gpx
+```
 
 # usage
 
